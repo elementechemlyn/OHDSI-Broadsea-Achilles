@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM rocker/r-ver:4.1.3
+FROM docker.io/rocker/r-ver:4.1.3
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
@@ -7,8 +7,8 @@ ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 RUN <<EOF
 groupadd -g 10001 achilles
 useradd -u 10001 -g achilles achilles
-mkdir ./output
 mkdir ./drivers
+mkdir ./workspace
 chown -R achilles .
 EOF
 
@@ -80,9 +80,17 @@ downloadJdbcDrivers('oracle');
 downloadJdbcDrivers('spark');
 EOF
 
+# this layer is the most likely to change over time so it's useful to keep it separated
+# hadolint ignore=DL3059
 RUN R -e "remotes::install_github('OHDSI/Achilles@c6b7adb6330e75c2311880db2eb3dc4c12341c4f')"
 
 COPY src/entrypoint.r ./
 
 USER 10001:10001
-CMD ["Rscript", "entrypoint.r"]
+
+WORKDIR /opt/achilles/workspace
+CMD ["Rscript", "/opt/achilles/entrypoint.r"]
+
+LABEL org.opencontainers.image.authors="OHDSI" \
+  org.opencontainers.image.base.name="docker.io/rocker/r-ver:4.1.3" \
+  org.opencontainers.image.vendor="OHDSI"
