@@ -29,7 +29,7 @@ default_vars <-
     "public",
     "public",
     "public",
-    "/opt/achilles/output",
+    "/opt/achilles/workspace",
     "5",
     "1"
   )
