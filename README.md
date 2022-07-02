@@ -9,7 +9,7 @@ Run [OHDSI Achilles](https://github.com/OHDSI/Achilles) as a container.
 
 ```sh
 docker run \
-    -e ACHILLES_SOURCE="postgresql://host.docker.internal:5432/postgres" \
+    -e ACHILLES_DB_URI="postgresql://host.docker.internal:5432/postgres" \
     -e ACHILLES_DB_USERNAME="postgres_user" \
     -e ACHILLES_DB_PASSWORD="postgres_password" \
     docker.io/ohdsi/broadsea-achilles:latest
