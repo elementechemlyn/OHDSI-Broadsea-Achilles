@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM rocker/r-ver:4.2.1
+FROM docker.io/rocker/r-ver:4.2.1
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
@@ -90,7 +90,3 @@ USER 10001:10001
 
 WORKDIR /opt/achilles/workspace
 CMD ["Rscript", "/opt/achilles/entrypoint.r"]
-
-LABEL org.opencontainers.image.authors="OHDSI" \
-  org.opencontainers.image.base.name="docker.io/rocker/r-ver:4.1.3" \
-  org.opencontainers.image.vendor="OHDSI"

@@ -36,6 +36,16 @@ jobs:
         with:
           images: |
             docker.io/ohdsi/broadsea-achilles
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha,event=branch
+          labels: |
+            org.opencontainers.image.authors="OHDSI"
+            org.opencontainers.image.vendor="OHDSI"
+            org.opencontainers.image.base.name="docker.io/rocker/r-ver:4.2.1"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@8b122486cedac8393e77aa9734c3528886e4a1a8 # tag=v2.0.0
       - name: Set up Docker Buildx
