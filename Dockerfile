@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM docker.io/rocker/r-ver:4.1.3
+FROM rocker/r-ver:4.2.1
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
@@ -82,7 +82,7 @@ EOF
 
 # this layer is the most likely to change over time so it's useful to keep it separated
 # hadolint ignore=DL3059
-RUN R -e "remotes::install_github('OHDSI/Achilles@c6b7adb6330e75c2311880db2eb3dc4c12341c4f')"
+RUN R -e "remotes::install_github('OHDSI/Achilles@759cc35f237e2877da26632bad18041838b4912b')"
 
 COPY src/entrypoint.r ./
 
