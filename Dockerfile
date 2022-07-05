@@ -82,7 +82,7 @@ EOF
 
 # this layer is the most likely to change over time so it's useful to keep it separated
 # hadolint ignore=DL3059
-RUN R -e "remotes::install_github('OHDSI/Achilles@c6b7adb6330e75c2311880db2eb3dc4c12341c4f')"
+RUN R -e "remotes::install_github('OHDSI/Achilles@759cc35f237e2877da26632bad18041838b4912b')"
 
 COPY src/entrypoint.r ./
 
@@ -90,7 +90,3 @@ USER 10001:10001
 
 WORKDIR /opt/achilles/workspace
 CMD ["Rscript", "/opt/achilles/entrypoint.r"]
-
-LABEL org.opencontainers.image.authors="OHDSI" \
-  org.opencontainers.image.base.name="docker.io/rocker/r-ver:4.1.3" \
-  org.opencontainers.image.vendor="OHDSI"
