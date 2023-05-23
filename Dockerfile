@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1.4
-FROM docker.io/rocker/r-ver:4.2.1@sha256:8f6f11097fbb1957cdc5330fd17913e9bed6d706eea4f5a5352574319e1317c9
+FROM docker.io/rocker/r-ver:4.3.0@sha256:88e6ef48d74c917fa7449a30307f5254525469eabb053e8392270993daa8f47f
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 
 RUN <<EOF
 groupadd -g 10001 achilles
-useradd -u 10001 -g achilles achilles
+useradd -m -u 10001 -g achilles achilles
 mkdir ./drivers
 mkdir ./workspace
 chown -R achilles .
@@ -82,7 +82,7 @@ EOF
 
 # this layer is the most likely to change over time so it's useful to keep it separated
 # hadolint ignore=DL3059
-RUN R -e "remotes::install_github('OHDSI/Achilles@v1.7.0')"
+RUN R -e "remotes::install_github('OHDSI/Achilles@v1.7.2')"
 
 COPY src/entrypoint.r ./
 
