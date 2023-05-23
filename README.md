@@ -12,10 +12,10 @@ docker run \
     -e ACHILLES_DB_URI="postgresql://host.docker.internal:5432/postgres" \
     -e ACHILLES_DB_USERNAME="postgres_user" \
     -e ACHILLES_DB_PASSWORD="postgres_password" \
-    docker.io/ohdsi/broadsea-achilles:latest
+    docker.io/ohdsi/broadsea-achilles:master
 ```
 
-You are encouraged to use the `vX.Y.Z` image tags corresponding to the [releases](https://github.com/OHDSI/Broadsea-Achilles/releases) instead of using `latest`.
+You are encouraged to use the `vX.Y.Z` image tags corresponding to the [releases](https://github.com/OHDSI/Broadsea-Achilles/releases) instead of using `master`.
 
 ## Configuration
 
