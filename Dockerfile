@@ -65,7 +65,7 @@ install2.r --error --ncpus 2 \
   R CMD javareconf
 EOF
 
-RUN  Install the DatabaseConnector package and dependencies
+# Install the DatabaseConnector package and dependencies
 RUN R --vanilla -e "install.packages('DatabaseConnector', repos='https://cloud.r-project.org')" && \
     R --vanilla <<EOF
 library(DatabaseConnector);
