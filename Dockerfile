@@ -61,12 +61,10 @@ install2.r --error --ncpus 2 \
   tseries \
   ParallelLogger \
   SqlRender \
-  DatabaseConnector
-  R CMD javareconf
-EOF
-
+  DatabaseConnector 
+    R CMD javareconf
 # Install the DatabaseConnector package and dependencies
-RUN R --vanilla -e "install.packages('DatabaseConnector', repos='https://cloud.r-project.org')" && \
+    R --vanilla -e "install.packages('DatabaseConnector', repos='https://cloud.r-project.org')"
     R --vanilla <<EOF
 library(DatabaseConnector);
 downloadJdbcDrivers('postgresql');
@@ -74,11 +72,10 @@ downloadJdbcDrivers('redshift');
 downloadJdbcDrivers('sql server');
 downloadJdbcDrivers('oracle');
 downloadJdbcDrivers('spark');
-EOF && \
 # this layer is the most likely to change over time so it's useful to keep it separated
 # hadolint ignore=DL3059
     R -e "remotes::install_github('OHDSI/Achilles@v1.7.2')"
-
+EOF
 
 
 COPY src/entrypoint.r ./
