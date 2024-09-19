@@ -70,7 +70,7 @@ install2.r --error --ncpus 2 \
 R CMD javareconf
 EOF
 
-RUN R <<EOF
+RUN R --vanilla <<EOF
 library(DatabaseConnector);
 
 downloadJdbcDrivers('postgresql');
