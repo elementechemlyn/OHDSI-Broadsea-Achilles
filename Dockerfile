@@ -10,10 +10,6 @@ useradd -m -u 10001 -g achilles achilles
 mkdir ./drivers
 mkdir ./workspace
 chown -R achilles .
-EOF
-
-# hadolint ignore=DL3008
-RUN <<EOF
 apt-get update
 apt-get install -y --no-install-recommends openjdk-11-jre-headless
 apt-get clean
@@ -66,23 +62,24 @@ install2.r --error --ncpus 2 \
   ParallelLogger \
   SqlRender \
   DatabaseConnector
-
-R CMD javareconf
+  R CMD javareconf
 EOF
 
-RUN R --vanilla <<EOF
+RUN  Install the DatabaseConnector package and dependencies
+RUN R --vanilla -e "install.packages('DatabaseConnector', repos='https://cloud.r-project.org')" && \
+    R --vanilla <<EOF
 library(DatabaseConnector);
-
 downloadJdbcDrivers('postgresql');
 downloadJdbcDrivers('redshift');
 downloadJdbcDrivers('sql server');
 downloadJdbcDrivers('oracle');
 downloadJdbcDrivers('spark');
-EOF
-
+EOF && \
 # this layer is the most likely to change over time so it's useful to keep it separated
 # hadolint ignore=DL3059
-RUN R -e "remotes::install_github('OHDSI/Achilles@v1.7.2')"
+    R -e "remotes::install_github('OHDSI/Achilles@v1.7.2')"
+
+
 
 COPY src/entrypoint.r ./
 
