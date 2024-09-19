@@ -65,7 +65,7 @@ install2.r --error --ncpus 2 \
     R CMD javareconf
 # Install the DatabaseConnector package and dependencies
     R --vanilla -e "install.packages('DatabaseConnector', repos='https://cloud.r-project.org')"
-    R --vanilla <<EOF
+    R --vanilla
 library(DatabaseConnector);
 downloadJdbcDrivers('postgresql');
 downloadJdbcDrivers('redshift');
