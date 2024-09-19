@@ -3,8 +3,13 @@ FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubu
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
+ENV ENV DEBIAN_FRONTEND=noninteractive
 
-RUN groupadd -g 10001 achilles && \
+RUN apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev && \
+    groupadd -g 10001 achilles && \
     useradd -m -u 10001 -g achilles achilles && \
     mkdir ./drivers && \
     mkdir ./workspace && \
