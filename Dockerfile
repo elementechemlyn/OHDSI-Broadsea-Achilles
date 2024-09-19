@@ -12,9 +12,10 @@ RUN groupadd -g 10001 achilles && \
     apt-get update && \
     apt-get install -y --no-install-recommends openjdk-11-jre-headless && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists/*
+
     # Install R packages with littler and ncpus=2
-    install2.r --error --ncpus 2 \
+RUN install2.r --error --ncpus 2 \
       httr \
       remotes \
       rjson \
@@ -59,8 +60,9 @@ RUN groupadd -g 10001 achilles && \
       tseries \
       ParallelLogger \
       SqlRender \
-      DatabaseConnector && \
-    R CMD javareconf && \
+      DatabaseConnector
+      
+RUN R CMD javareconf && \
     R --vanilla -e "library(DatabaseConnector); downloadJdbcDrivers('postgresql'); downloadJdbcDrivers('redshift'); downloadJdbcDrivers('sql server'); downloadJdbcDrivers('oracle'); downloadJdbcDrivers('spark')" && \
     R -e "remotes::install_github('OHDSI/Achilles@v1.7.2')"
 
