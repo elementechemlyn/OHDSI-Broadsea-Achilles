@@ -5,11 +5,7 @@ ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Create necessary directories and set up R configurations
-RUN mkdir /root/.R && \
-    echo "PKG_CXXFLAGS = -O3 -march=native" >> /root/.R/Makevars && \
-    echo "PKG_CPPFLAGS = -I /usr/local/include" >> /root/.R/Makevars && \
-    echo "PKG_FCFLAGS = -O3" >> /root/.R/Makevars && \
-    apt-get update -y && \
+RUN apt-get update -y && \
     apt-get install -y \
     r-base \
     r-base-dev \
@@ -23,16 +19,13 @@ RUN mkdir /root/.R && \
     rm -rf /var/lib/apt/lists/*
 
 # Install R packages
-RUN R -e "install.packages('littler', repos = 'https://packagemanager.posit.co/cran/latest')" && \
-    R -e "install.packages('docopt', repos = 'https://packagemanager.posit.co/cran/latest')" && \
-    R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+RUN R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R CMD javareconf && \
     R -e "install.packages('remotes', repos = 'https://packagemanager.posit.co/cran/latest')" && \
-    R -e "install.packages('docopt', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('ParallelLogger', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('SqlRender', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('DatabaseConnector', repos = 'https://packagemanager.posit.co/cran/latest')" && \
-    R CMD javareconf && \
-    ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
+    R CMD javareconf 
 
     # Add the environment variable for DatabaseConnector
 RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
