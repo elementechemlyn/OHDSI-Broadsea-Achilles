@@ -7,8 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Create necessary directories and set up R configurations
 RUN mkdir /root/.R && \
     echo "PKG_CXXFLAGS = -O3 -march=native" >> /root/.R/Makevars && \
-    echo "PKG_CPPFLAGS = -I/usr/local/include" >> /root/.R/Makevars && \
-    echo "PKG_FCFLAGS = -O3apt-get update" >> ~/.R/Makevars && \  # Fixed line
+    echo "PKG_CPPFLAGS = -I /usr/local/include" >> /root/.R/Makevars && \
+    echo "PKG_FCFLAGS = -O3" >> /root/.R/Makevars && \
     apt-get update -y && \
     apt-get install -y \
     r-base \
@@ -30,12 +30,7 @@ RUN R -e "install.packages('littler', repos = 'https://packagemanager.posit.co/c
 COPY --chmod=755 src/install2.r /usr/local/bin/install2.r 
 
 # Install required R packages and configure environment
-RUN install2.r --error --ncpus 2 --skipinstalled --repos "https://packagemanager.posit.co/cran/latest" \
-    rJava \
-    remotes \
-    ParallelLogger \
-    SqlRender \
-    DatabaseConnector && \
+RUN install2.r --error --ncpus 2 --skipinstalled --repos "https://packagemanager.posit.co/cran/latest" rJava remotes ParallelLogger SqlRender DatabaseConnector && \
 
     # Add the environment variable for DatabaseConnector
     echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
