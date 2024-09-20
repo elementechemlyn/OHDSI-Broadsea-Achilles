@@ -24,8 +24,7 @@ RUN R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cra
     R -e "install.packages('remotes', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('ParallelLogger', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('SqlRender', repos = 'https://packagemanager.posit.co/cran/latest')" && \
-    R -e "install.packages('DatabaseConnector', repos = 'https://packagemanager.posit.co/cran/latest')" && \
-    R CMD javareconf 
+    R -e "install.packages('DatabaseConnector', repos = 'https://packagemanager.posit.co/cran/latest')"
 
     # Add the environment variable for DatabaseConnector
 RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
