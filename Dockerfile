@@ -2,8 +2,9 @@ FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubu
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/
-
 ENV DEBIAN_FRONTEND=noninteractive
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV LD_LIBRARY_PATH=$JAVA_HOME/lib/server:$LD_LIBRARY_PATH
 
 # Create necessary directories and set up R configurations
 RUN apt-get update -y && \
@@ -36,7 +37,7 @@ RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseCon
     R -e "remotes::install_github('mdaca/OHDSI-Achilles@v1.7.2')" && \
     # Clean up temporary files
     rm -Rf /var/lib/apt/lists/* /tmp/* && \
-    chown -R 10001:10001 /opt/achilles
+    chown -R 10001:10001 /opt/achilles /usr/local/lib/R /usr/local/bin/*
 
 
 
