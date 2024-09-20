@@ -36,8 +36,24 @@ RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseCon
     rm -Rf /var/lib/apt/lists/* /tmp/* && \
     chown -R 10001:10001 /opt/achilles
 
+
+
 # Copy entrypoint script and set permissions
 COPY --chown=achilles --chmod=755 src/entrypoint.r ./ 
+
+WORKDIR /tmp
+
+# Patched CVE-2024-1597 CVE-2024-32888 CVE-2022-21724 & CVE-2022-31197
+RUN apt-get update -y && \
+    apt-rm -f /usr/local/lib/R/site-library/DatabaseConnector/java/postgresql-42.2.18.jar /usr/local/lib/R/site-library/DatabaseConnector/java/redshift-jdbc42-2.1.0.20.jar && \
+    wget https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/2.1.0.30/redshift-jdbc42-2.1.0.30.zip && \
+    mv redshift-jdbc42-2.1.0.30.jar /usr/local/lib/R/site-library/DatabaseConnector/java/ && \
+    wget https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.28/postgresql-42.2.28.jar && \
+    mv postgresql-42.2.28.jar /usr/local/lib/R/site-library/DatabaseConnector/java/ && \
+    rm -Rf /tmp/*
+
+    
+
 
 # Switch to non-root user
 USER 10001:10001
