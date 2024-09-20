@@ -22,18 +22,17 @@ RUN mkdir /root/.R && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install R packages and link littler
+# Install R packages
 RUN R -e "install.packages('littler', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('docopt', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('remotes', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('docopt', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('ParallelLogger', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('SqlRender', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('DatabaseConnector', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R CMD javareconf && \
     ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
-
-# Copy install2.r script
-COPY --chmod=755 src/install2.r /usr/local/bin/install2.r 
-
-# Install required R packages and configure environment
-RUN install2.r --error --ncpus 2 --skipinstalled --repos "https://packagemanager.posit.co/cran/latest" remotes ParallelLogger SqlRender DatabaseConnector
 
     # Add the environment variable for DatabaseConnector
 RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
