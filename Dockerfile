@@ -48,7 +48,7 @@ RUN install2.r --error --ncpus 2 --skipinstalled --repos "https://packagemanager
     rm -rf /var/lib/apt/lists/* /tmp/*
 
 # Copy entrypoint script and set permissions
-COPY --chown=achilles --chmod=755 src/entrypoint.r  cd ./
+COPY --chown=achilles --chmod=755 src/entrypoint.r ./
 
 # Switch to non-root user
 USER 10001:10001
