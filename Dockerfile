@@ -24,7 +24,7 @@ RUN mkdir /root/.R &&\
     # Install r and install2.r
 RUN R -e "install.packages(c('littler', 'docopt'), dependencies = TRUE, repos = 'http://cran.r-project.org')" && \
     ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r 
-COPY --chmod-755 src/install2.r /usr/local/bin/install2.r 
+COPY --chmod=755 src/install2.r /usr/local/bin/install2.r 
     # The default GitHub Actions runner has 2 vCPUs (https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners)
 RUN install2.r --error --ncpus 2  --skipinstalled --repos "https://packagemanager.posit.co/cran/latest \
     rJava \
@@ -39,7 +39,7 @@ RUN install2.r --error --ncpus 2  --skipinstalled --repos "https://packagemanage
     R --vanilla -e "library(DatabaseConnector); downloadJdbcDrivers('postgresql'); downloadJdbcDrivers('redshift'); downloadJdbcDrivers('sql server'); downloadJdbcDrivers('oracle'); downloadJdbcDrivers('spark')" && \
     R -e "remotes::install_github('mdaca/OHDSI-Achilles@v1.7.2')" && rm -rf /var/lib/apt/lists/* /tmp/*
 
-COPY --chown=achilles --chmod 755 src/entrypoint.r  ./
+COPY --chown=achilles --chmod=755 src/entrypoint.r  ./
 
 USER 10001:10001
 
