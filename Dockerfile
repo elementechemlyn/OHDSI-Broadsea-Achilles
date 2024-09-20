@@ -7,12 +7,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
+    libxml2-dev \
+    libgit2-dev \
+    libssh2-1-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
     libxml2-dev && \
-    libgit2-dev && \
-    libssh2-1-dev && \
-    libcurl4-openssl-dev && \
-    libssl-dev && \
-    libxml2-dev
     groupadd -g 10001 achilles && \
     useradd -m -u 10001 -g achilles achilles && \
     mkdir ./drivers && \
