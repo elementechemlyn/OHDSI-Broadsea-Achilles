@@ -19,7 +19,7 @@ RUN apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
     # Install R packages with littler and ncpus=2
-COPY --chown=achilles --chmod-x install2.r /usr/local/bin/install2.r
+COPY --chown=achilles --chmod=x install2.r /usr/local/bin/install2.r
 RUN install2.r --error --ncpus 2 \
       httr \
       remotes \
