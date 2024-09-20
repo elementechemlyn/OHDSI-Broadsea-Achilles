@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Create necessary directories and set up R configurations
 RUN apt-get update -y && \
-    apt-get install -y \
+    apt-get install --no-install-recommends -y \
     r-base \
     r-base-dev \
     openjdk-11-jdk-headless && \
@@ -28,19 +28,16 @@ RUN R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cra
 
     # Add the environment variable for DatabaseConnector
 RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
-
-
     # Download JDBC drivers for various databases
     R --vanilla -e "library(DatabaseConnector); downloadJdbcDrivers('postgresql'); downloadJdbcDrivers('redshift'); downloadJdbcDrivers('sql server'); downloadJdbcDrivers('oracle'); downloadJdbcDrivers('spark')" && \
-
     # Install OHDSI Achilles
     R -e "remotes::install_github('mdaca/OHDSI-Achilles@v1.7.2')" && \
-
     # Clean up temporary files
-    rm -rf /var/lib/apt/lists/* /tmp/*
+    rm -Rf /var/lib/apt/lists/* /tmp/* && \
+    chown -R 10001:10001 /opt/achilles
 
 # Copy entrypoint script and set permissions
-COPY --chown=achilles --chmod=755 src/entrypoint.r ./
+COPY --chown=achilles --chmod=755 src/entrypoint.r ./ 
 
 # Switch to non-root user
 USER 10001:10001
