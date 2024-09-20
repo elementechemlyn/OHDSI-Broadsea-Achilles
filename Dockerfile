@@ -1,5 +1,5 @@
 FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1
-RUN pwd
+
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -19,7 +19,7 @@ RUN apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
     # Install R packages with littler and ncpus=2
-COPY --chown=achilles --chmod=x install2.r /usr/local/bin/install2.r
+COPY --chown=achilles --chmod=x /home/runner/install2.r /usr/local/bin/install2.r
 RUN install2.r --error --ncpus 2 \
       httr \
       remotes \
