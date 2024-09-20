@@ -12,7 +12,8 @@ RUN mkdir /root/.R && \
     apt-get update -y && \
     apt-get install -y \
     r-base \
-    r-base-dev && \
+    r-base-dev \
+    openjdk-11-jdk-headless && \
     groupadd -g 10001 achilles && \
     useradd -m -u 10001 -g achilles achilles && \
     mkdir ./drivers && \
@@ -24,19 +25,19 @@ RUN mkdir /root/.R && \
 # Install R packages and link littler
 RUN R -e "install.packages('littler', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('docopt', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R CMD javareconf && \
     ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
 
 # Copy install2.r script
 COPY --chmod=755 src/install2.r /usr/local/bin/install2.r 
 
 # Install required R packages and configure environment
-RUN install2.r --error --ncpus 2 --skipinstalled --repos "https://packagemanager.posit.co/cran/latest" rJava remotes ParallelLogger SqlRender DatabaseConnector && \
+RUN install2.r --error --ncpus 2 --skipinstalled --repos "https://packagemanager.posit.co/cran/latest" remotes ParallelLogger SqlRender DatabaseConnector
 
     # Add the environment variable for DatabaseConnector
-    echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
+RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
 
-    # Configure Java for R
-    R CMD javareconf && \
 
     # Download JDBC drivers for various databases
     R --vanilla -e "library(DatabaseConnector); downloadJdbcDrivers('postgresql'); downloadJdbcDrivers('redshift'); downloadJdbcDrivers('sql server'); downloadJdbcDrivers('oracle'); downloadJdbcDrivers('spark')" && \
