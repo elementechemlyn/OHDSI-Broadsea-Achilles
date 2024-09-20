@@ -2,7 +2,7 @@
 FROM rocker/r-ver:4.4.1 AS builder
 
 FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1
-COPY --from=builder --chown:r /usr/local/bin/install2.r /usr/local/bin/install2.r
+COPY --from=builder --chown=r /usr/local/bin/install2.r /usr/local/bin/install2.r
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
