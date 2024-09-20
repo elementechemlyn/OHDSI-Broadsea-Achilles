@@ -19,7 +19,7 @@ RUN apt-get install -y \
     rm -rf /var/lib/apt/lists/*
       
     #RUN R -e "install.packages(c('httr', 'remotes', 'xtable', 'httpuv', 'shiny', 'ttr', 'zoo', 'xts', 'quantmod', 'quadprog', 'tseries', 'ParallelLogger', 'SqlRender', 'DatabaseConnector'), quiet = TRUE, dependencies = TRUE, repos = 'http://cran.r-project.org')" && \
-RUN R -e "install.packages(c('httr', 'remotes', 'rjson', \'tseries', 'ParallelLogger', 'SqlRender', 'DatabaseConnector'), quiet = TRUE, dependencies = TRUE, repos = 'http://cran.r-project.org')" && \
+RUN R -e "install.packages(c('httr', 'remotes', 'rjson', 'tseries', 'ParallelLogger', 'SqlRender', 'DatabaseConnector'), quiet = TRUE, dependencies = TRUE, repos = 'http://cran.r-project.org')" && \
     R CMD javareconf && \
     R --vanilla -e "library(DatabaseConnector); downloadJdbcDrivers('postgresql'); downloadJdbcDrivers('redshift'); downloadJdbcDrivers('sql server'); downloadJdbcDrivers('oracle'); downloadJdbcDrivers('spark')" && \
     R -e "remotes::install_github('mdaca/OHDSI-Achilles@v1.7.2')"
