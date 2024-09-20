@@ -1,5 +1,5 @@
 FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1
-
+RUN pwd
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 ENV DEBIAN_FRONTEND=noninteractive
