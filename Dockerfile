@@ -27,6 +27,7 @@ RUN R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cra
     R -e "install.packages('ParallelLogger', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('SqlRender', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('httr', repos = 'https://packagemanager.posit.co/cran/latest')" && \
+    R -e "install.packages('aws.s3', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('DatabaseConnector', repos = 'https://packagemanager.posit.co/cran/latest')"
 
     # Add the environment variable for DatabaseConnector
