@@ -4,7 +4,8 @@ WORKDIR mkd/opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
@@ -18,7 +19,6 @@ RUN apt-get install -y \
     mkdir ./drivers && \
     mkdir ./workspace && \
     chown -R achilles . && \
-    apt-get update && \
     apt-get install -y --no-install-recommends openjdk-11-jre-headless && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
