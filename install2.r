@@ -1,4 +1,4 @@
-#!/usr/bin/env r
+#!/usr/local/bin/r
 #
 # A second example to install one or more packages, now with option parsing
 #
