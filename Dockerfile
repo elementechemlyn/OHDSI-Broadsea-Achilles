@@ -4,8 +4,7 @@ WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN mkdir /root/.R &&\
-    mkdir /opt/achilles && \
+RUN mkdir /root/.R && \
     echo "PKG_CXXFLAGS = -O3 -march=native" >> ~/.R/Makevars && \
     echo "PKG_CPPFLAGS = -I/usr/local/include" >> ~/.R/Makevars && \
     echo "PKG_FCFLAGS = -O3apt-get update" >> ~/.R/Makevars && \
