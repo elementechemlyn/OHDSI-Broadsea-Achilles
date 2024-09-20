@@ -1,7 +1,8 @@
 FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1
 
 WORKDIR /opt/achilles
-ENV DATABASECONNECTOR_JAR_FOLDER="/opt/achilles/drivers"
+ENV DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Create necessary directories and set up R configurations
@@ -12,7 +13,7 @@ RUN apt-get update -y && \
     openjdk-11-jdk-headless && \
     groupadd -g 10001 achilles && \
     useradd -m -u 10001 -g achilles achilles && \
-    mkdir ./drivers && \
+    ln -s /usr/local/lib/R/site-library/DatabaseConnector/java drivers && \
     mkdir ./workspace && \
     chown -R achilles:achilles . && \
     apt-get clean && \
