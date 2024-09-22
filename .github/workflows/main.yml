@@ -44,6 +44,12 @@ jobs:
 
           # Push the Docker image
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+           
+          # Add latest tag
+          docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
+
+          # push latest Docker Image
+          docker push $REGISTRY/$REPOSITORY:latest
           
   security:
     runs-on: ubuntu-latest
