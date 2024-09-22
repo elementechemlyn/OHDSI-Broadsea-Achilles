@@ -1,4 +1,4 @@
-FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1
+FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1 AS build
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/
@@ -37,9 +37,8 @@ RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseCon
     # Install OHDSI Achilles
     R -e "remotes::install_github('mdaca/OHDSI-Achilles@v1.7.2')" && \
     # Clean up temporary files
-    rm -Rf /var/lib/apt/lists/* /tmp/* && \
+    rm -Rf /var/lib/apt/lists/* tmp/* && \
     chown -R 10001:10001 /opt/achilles /usr/local/lib/R /usr/local/bin/*
-
 
 
 # Copy entrypoint script and set permissions
@@ -57,7 +56,32 @@ RUN rm -f /usr/local/lib/R/site-library/DatabaseConnector/java/postgresql-42.2.1
     rm -Rf /tmp/*
 
     
+FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu:22.04_stable
 
+
+WORKDIR /opt/achilles
+ENV DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/
+ENV DEBIAN_FRONTEND=noninteractive
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV LD_LIBRARY_PATH=$JAVA_HOME/lib/server:$LD_LIBRARY_PATH
+
+RUN apt-get update -y && \
+    apt-get install --no-install-recommends -y \
+    r-base \
+    openjdk-11-jdk-headless && \
+    groupadd -g 10001 achilles && \
+    useradd -m -u 10001 -g achilles achilles && \
+    mkdir ./workspace && \
+    chown -R achilles:achilles . && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+
+COPY --from=build --chown=achilles /opt/achilles /opt/achilles
+COPY --from=build --chown=achilles /usr/local/bin /usr/local/bin
+COPY --from=build --chown=achilles /usr/local/lib /usr/local/lib
+
+RUN ln -s /usr/local/lib/R/site-library/DatabaseConnector/java drivers
 
 # Switch to non-root user
 USER 10001:10001
