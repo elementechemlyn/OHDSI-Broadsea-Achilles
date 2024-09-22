@@ -52,7 +52,7 @@ RUN rm -f /usr/local/lib/R/site-library/DatabaseConnector/java/postgresql-42.2.1
     wget https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/2.1.0.30/redshift-jdbc42-2.1.0.30.zip && \
     unzip redshift-jdbc42-2.1.0.30.zip && \
     mv redshift-jdbc42-2.1.0.30.jar /usr/local/lib/R/site-library/DatabaseConnector/java/ && \
-    wget https://repo1.maven.org/maven2/org/postgresql/postgresql/42.3.3/postgresql-42.3.9.jar && \
+    wget https://repo1.maven.org/maven2/org/postgresql/postgresql/42.3.9/postgresql-42.3.9.jar && \
     mv postgresql-42.3.9.jar /usr/local/lib/R/site-library/DatabaseConnector/java/postgresql-42.3.9.jar && \
     rm -Rf /tmp/*
 
