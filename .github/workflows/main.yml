@@ -85,9 +85,8 @@ jobs:
           IMAGE_TAG: 1.7.2
           ECR_REPOSITORY: mdaca/ohdsi/achilles
         run: |
-          cat /home/runner/work/OHDSI-Broadsea-Achilles/OHDSI-Broadsea-Achilles/csv.tpl
-          trivy image --severity HIGH,CRITICAL $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
           trivy image --format template --template /home/runner/work/OHDSI-Broadsea-Achilles/OHDSI-Broadsea-Achilles/csv.tpl $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          trivy image --severity HIGH,CRITICAL $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
         continue-on-error: true
       - name: Install Syft
