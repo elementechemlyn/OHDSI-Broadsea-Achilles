@@ -1,7 +1,10 @@
 {{- $separator := "," -}}
-{{- printf "Vulnerability ID%sPackage Name%sPackage Version%sSeverity%sDescription" $separator $separator $separator $separator -}}
-{{- "\n" -}}
+# Vulnerability Database Version: {{ .VulnerabilityDBVersion }}
+# Vulnerability Database Date: {{ .VulnerabilityDBDate }}
+
+Vulnerability ID,Package Name,Package Version,Severity,Description
 {{- range .Vulnerabilities }}
 {{- printf "%s%s%s%s%s%s%s%s%s" .VulnerabilityID $separator .PkgName $separator .PkgVersion $separator .Severity $separator .Description }}
 {{- "\n" -}}
 {{- end }}
+
