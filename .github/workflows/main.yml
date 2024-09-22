@@ -85,7 +85,9 @@ jobs:
           IMAGE_TAG: 1.7.2
           ECR_REPOSITORY: mdaca/ohdsi/achilles
         run: |
-          trivy image --exit-code 1 --severity HIGH,CRITICAL $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          trivy image --severity HIGH,CRITICAL $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          trivy image --format template --template /home/runner/work/OHDSI-Broadsea-Achilles/OHDSI-Broadsea-Achilles/csv.tpl --output OHDSI-Achilles-trivy.csv $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+
         continue-on-error: true
       - name: Install Syft
         run: |
@@ -101,8 +103,10 @@ jobs:
           syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
           syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG  > OHDSI-Achilles-sbom.tf
 
-      - name: Upload SBOM
+      - name: Upload Reports
         uses: actions/upload-artifact@v4
         with:
-          name: sbom
-          path: jOHDSI-Achilles-sbom.tf
+          name: trivy-and-sbom-reports
+          path: |
+            OHDSI-Achilles-trivy.csv
+            OHDSI-Achilles-sbom.tf
