@@ -1,4 +1,4 @@
-FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu-r:22.04_4.4.1 AS build
+FROM rocker/r-ubuntu AS build
 
 WORKDIR /opt/achilles
 ENV DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/
@@ -11,7 +11,7 @@ RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
     r-base \
     r-base-dev \
-    openjdk-11-jdk-headless && \
+    openjdk-11-jdk-headless libcurl4-openssl-dev libxml2-dev libssl-dev && \
     groupadd -g 10001 achilles && \
     useradd -m -u 10001 -g achilles achilles && \
     ln -s /usr/local/lib/R/site-library/DatabaseConnector/java drivers && \
@@ -30,12 +30,14 @@ RUN R -e "install.packages('rJava', repos = 'https://packagemanager.posit.co/cra
     R -e "install.packages('aws.s3', repos = 'https://packagemanager.posit.co/cran/latest')" && \
     R -e "install.packages('DatabaseConnector', repos = 'https://packagemanager.posit.co/cran/latest')"
 
+RUN mkdir -p /usr/local/lib/R/etc/
+
     # Add the environment variable for DatabaseConnector
 RUN echo "DATABASECONNECTOR_JAR_FOLDER=/usr/local/lib/R/site-library/DatabaseConnector/java/" >> /usr/local/lib/R/etc/Renviron && \
     # Download JDBC drivers for various databases
     R --vanilla -e "library(DatabaseConnector); downloadJdbcDrivers('postgresql'); downloadJdbcDrivers('redshift'); downloadJdbcDrivers('sql server'); downloadJdbcDrivers('oracle'); downloadJdbcDrivers('spark')" && \
     # Install OHDSI Achilles
-    R -e "remotes::install_github('mdaca/OHDSI-Achilles@v1.7.2')" && \
+    R -e "remotes::install_github('OHDSI/Achilles@v1.7.0')" && \
     # Clean up temporary files
     rm -Rf /var/lib/apt/lists/* tmp/* && \
     chown -R 10001:10001 /opt/achilles /usr/local/lib/R /usr/local/bin/*
@@ -56,7 +58,7 @@ RUN rm -f /usr/local/lib/R/site-library/DatabaseConnector/java/postgresql-42.2.1
     rm -Rf /tmp/*
 
     
-FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu:22.04_stable
+FROM rocker/r-ubuntu
 
 
 WORKDIR /opt/achilles
